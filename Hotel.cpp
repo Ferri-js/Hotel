@@ -1,5 +1,13 @@
 #include <stdio.h>
 
+typedef struct endereco{
+	char end[40];
+	char munic[20];
+	char UF[3];
+	char cep[10];
+}typeEnd;
+
+
 main(){
 	char tab[20][14];
 	int i, j;
