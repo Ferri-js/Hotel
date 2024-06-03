@@ -2,6 +2,6 @@
 
 Projeto Eli Banks
 
-## Teste
+## Importante
 
-aaa
+ctrl + shift + b pr criar o .exe no vsc
