@@ -108,7 +108,6 @@ void checkIn (int i, int j){
     
 }
 
-tipoApartamento hotel[20][14];
 
 int main() {
     matrizHotel();
