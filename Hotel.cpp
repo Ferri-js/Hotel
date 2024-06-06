@@ -22,11 +22,6 @@ typedef struct apartamento {
 
 tipoApartamento hotel[20][14];
 
-void fclear(){
-	char car;
-	while((car = fgetc(stdin)) != EOF && car != '\n'){}
-}
-
 void matrizHotel() {
     for (int i = 20; i > 0; i--) {
         for (int j = 1; j < 15; j++) {
@@ -35,78 +30,17 @@ void matrizHotel() {
     }
 }
 
-void exibirMapaHotel() {
-    printf("Mapa dos apartamentos:\n");
-    printf("\t");
-    
-    for(int j = 1; j < 15; j++)
-    	printf("%2d ", j);
-    printf("\n\n");
-    
-    for (int i = 20; i > 0; i--) { 
-        printf("%2d:\t", i);
-        for (int j = 1; j < 15; j++) {
-            printf(" %c ", hotel[i][j].status);
-        }
-        printf("\n");
-    }
-}
+void fclear();
 
-void reservarApartamento(int i, int j) {
-    if (hotel[i][j].status == '.') {
-        hotel[i][j].status = 'R';
-        printf("Apartamento %d-%d reservado com sucesso.\n", i + 1, j + 1);
-    } else {
-        printf("Apartamento %d-%d não está disponível para reserva.\n", i + 1, j + 1);
-    }
-}
+
+
+void exibirMapaHotel();
+
+void reservarApartamento(int i, int j);
 
 void checkOut(int i, int j);
 
-void checkIn (int i, int j){
-    char v;
-    if(hotel[i][j].status == '.'){
-        printf("Digite o Nome\n");
-        scanf("%c", hotel[i][j].hospede.nome[40]);
-        printf("Digite o CPF:\n");
-        scanf("%c", hotel[i][j].hospede.cpf[14]);
-        fclear();
-        printf("deseja confirmar o check in?(s/n)\n");
-        scanf("%c", &v);
-        fclear();
-        if (v == 's' || v == 'S'){
-            hotel[i][j].status = 'O';
-        }else if (v == 'n' || v == 'N'){
-            checkOut(i, j);
-        }
-        
-        
-    }else if (hotel[i][j].status == 'R'){
-        printf("quarto reservado para:\t%c\tCPF:\t%c\n", hotel[i][j].hospede.nome[40], hotel[i][j].hospede.cpf[14]);
-        printf("deseja confirmar o Check-in(s/n)?:\n");
-        scanf("%c", &v);
-        fclear();
-        if (v == 's' || v == 'S'){
-            hotel[i][j].status = 'O';
-        }else if (v == 'n' || v == 'N'){
-            checkOut(i, j);
-        }
-    }else{
-        printf("Quarto Ocupado\nDeseja escolher outro quarto?\n");
-        scanf("%c", &v);
-        fclear();
-        if (v == 's' || v == 'S')
-        {
-            printf("digite o quarto que deseja realizar o Check-in\n");
-            scanf("%d %d", &i, &j);
-            fclear();
-            checkIn(i, j);
-        }
-        
-    }
-    
-    
-}
+void checkIn (int i, int j);
 
 
 int main() {
@@ -174,4 +108,80 @@ void checkOut(int i, int j){
     hotel[i][j].status = '.';
     hotel[i][j].hospede.nome[40] = ' ';
     hotel[i][j].hospede.cpf[14] = ' ';
+}
+
+void checkIn (int i, int j){
+    char v;
+    if(hotel[i][j].status == '.'){
+        printf("Digite o Nome\n");
+        scanf("%c", hotel[i][j].hospede.nome[40]);
+        printf("Digite o CPF:\n");
+        scanf("%c", hotel[i][j].hospede.cpf[14]);
+        fclear();
+        printf("deseja confirmar o check in?(s/n)\n");
+        scanf("%c", &v);
+        fclear();
+        if (v == 's' || v == 'S'){
+            hotel[i][j].status = 'O';
+        }else if (v == 'n' || v == 'N'){
+            checkOut(i, j);
+        }
+        
+        
+    }else if (hotel[i][j].status == 'R'){
+        printf("quarto reservado para:\t%c\tCPF:\t%c\n", hotel[i][j].hospede.nome[40], hotel[i][j].hospede.cpf[14]);
+        printf("deseja confirmar o Check-in(s/n)?:\n");
+        scanf("%c", &v);
+        fclear();
+        if (v == 's' || v == 'S'){
+            hotel[i][j].status = 'O';
+        }else if (v == 'n' || v == 'N'){
+            checkOut(i, j);
+        }
+    }else{
+        printf("Quarto Ocupado\nDeseja escolher outro quarto?\n");
+        scanf("%c", &v);
+        fclear();
+        if (v == 's' || v == 'S')
+        {
+            printf("digite o quarto que deseja realizar o Check-in\n");
+            scanf("%d %d", &i, &j);
+            fclear();
+            checkIn(i, j);
+        }
+        
+    }
+    
+    
+}
+
+void reservarApartamento(int i, int j) {
+    if (hotel[i][j].status == '.') {
+        hotel[i][j].status = 'R';
+        printf("Apartamento %d-%d reservado com sucesso.\n", i + 1, j + 1);
+    } else {
+        printf("Apartamento %d-%d não está disponível para reserva.\n", i + 1, j + 1);
+    }
+}
+
+void exibirMapaHotel() {
+    printf("Mapa dos apartamentos:\n");
+    printf("\t");
+    
+    for(int j = 1; j < 15; j++)
+    	printf("%2d ", j);
+    printf("\n\n");
+    
+    for (int i = 20; i > 0; i--) { 
+        printf("%2d:\t", i);
+        for (int j = 1; j < 15; j++) {
+            printf(" %c ", hotel[i][j].status);
+        }
+        printf("\n");
+    }
+}
+
+void fclear(){
+	char car;
+	while((car = fgetc(stdin)) != EOF && car != '\n'){}
 }
