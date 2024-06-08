@@ -113,6 +113,7 @@ void checkIn (int i, int j){
     if(hotel[i][j].status == '.'){
         printf("Digite o Nome\n");
         scanf("%c", hotel[i][j].hospede.nome[40]);
+        fclear();
         printf("Digite o CPF:\n");
         scanf("%c", hotel[i][j].hospede.cpf[14]);
         fclear();
