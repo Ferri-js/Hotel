@@ -32,8 +32,6 @@ void matrizHotel() {
 
 void fclear();
 
-
-
 void exibirMapaHotel();
 
 void reservarApartamento(int i, int j);
