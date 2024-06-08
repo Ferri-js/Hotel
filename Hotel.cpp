@@ -46,6 +46,8 @@ void checkOut(int i, int j);
 
 void checkIn(int i, int j);
 
+void cReserva(int i, int j);
+
 int main() 
 {
     matrizHotel();
@@ -98,7 +100,7 @@ int main()
                 printf("Deseja cancelar a reserva de qual quarto: ");
                 scanf("%d %d", &andar, &apto);
                 fclear();
-                if(hotel[i-1][j-1].status == '.')
+                if(hotel[i][j].status == '.')
                 {
                 	printf("O quarto selecionado nao esta reservado\n");
                 	break;
@@ -224,4 +226,8 @@ void fclear()
 {
     char car;
     while ((car = fgetc(stdin)) != EOF && car != '\n') {}
+}
+
+void cReserva (int i, int j){
+    
 }
