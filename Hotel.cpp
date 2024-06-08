@@ -1,13 +1,15 @@
 #include <stdio.h>
 
-typedef struct endereco{
-	char ender[40];
-	char munic[20];
-	char UF[3];
-	char cep[10];
-}tipoEnder;
+typedef struct endereco 
+{
+    char ender[40];
+    char munic[20];
+    char UF[3];
+    char cep[10];
+} tipoEnder;
 
-typedef struct hospede{
+typedef struct hospede 
+{
     char cpf[14];
     char nome[40];
     char telefone[15];
@@ -15,16 +17,20 @@ typedef struct hospede{
     float valorHospedagem;
 } tipoHospede;
 
-typedef struct apartamento {
+typedef struct apartamento 
+{
     char status;
     tipoHospede hospede;
 } tipoApartamento;
 
 tipoApartamento hotel[20][14];
 
-void matrizHotel() {
-    for (int i = 20; i > 0; i--) {
-        for (int j = 1; j < 15; j++) {
+void matrizHotel() 
+{
+    for (int i = 19; i >= 0; i--)
+	{
+        for (int j = 0; j <= 14; j++) 
+		{
             hotel[i][j].status = '.';
         }
     }
@@ -38,149 +44,184 @@ void reservarApartamento(int i, int j);
 
 void checkOut(int i, int j);
 
-void checkIn (int i, int j);
+void checkIn(int i, int j);
 
-
-int main() {
+int main() 
+{
     matrizHotel();
     int opcao, andar, apto;
-    char v;
+    char confirmacao;
 
-    do {
-        printf("\nMenu:\n1. Visualizar mapa do Hotel\n2. Reservar apartamento\n3. Chek-in\n4. Check-Out\n5. Cancelar Reserva\n0. Sair\nEscolha uma opcao: \n");
+    do 
+	{
+        printf("\nMenu:\n1. Visualizar mapa do Hotel\n2. Reservar apartamento\n3. Check-in\n4. Check-Out\n5. Cancelar Reserva\n0. Sair\nEscolha uma opcao: \n");
         scanf("%d", &opcao);
         fclear();
+        int i, j;
 
-        switch (opcao) {
+        switch (opcao) 
+		{
             case 1: // mostra o mapa do hotel
                 exibirMapaHotel();
                 break;
-            case 2: //rezerva
+            case 2: // reserva
                 printf("Informe o andar e o numero do apartamento para reservar (1-20, 1-14): ");
                 scanf("%d %d", &andar, &apto);
                 fclear();
-                reservarApartamento(andar, apto);
-                printf("Reserva realizada com sucesso.\n");
+                reservarApartamento(andar - 1, apto - 1);
                 exibirMapaHotel();
                 break;
-            case 3: //check-in
-                printf("digite o quarto no qual sera feito o check-in: \n");
+            case 3: // check-in
+                printf("Digite o quarto no qual sera feito o check-in: ");
                 scanf("%d %d", &andar, &apto);
                 fclear();
-                checkIn(andar, apto);
+                checkIn(andar - 1, apto - 1);
                 exibirMapaHotel();
                 break;
-            case 4: //check-out
-                printf("em qual apartamento sera feito o check-out:\n");
+            case 4: // check-out
+                printf("Em qual apartamento sera feito o check-out: ");
                 scanf("%d %d", &andar, &apto);
                 fclear();
-                checkOut(andar, apto);
-                printf("Check-out realizado com sucesso.\n");
-                break;
-            case 5: //cancelamento de reserva
-                printf("deseja cancelar a reserva de qual quarto");
-                scanf("%d %d", &andar, &apto);
-                fclear();
-                printf("quarto reservado para: %c\tCPF: %c\n", hotel[andar][apto].hospede.nome[40], hotel[andar][apto].hospede.cpf);
-                printf("deseja cancelar a reserva?(s/n)\n");
-                scanf("%c", &v);
-                fclear();
-                if (v == 's' || v == 'S')
+                if((hotel[i][j].status == '.') || (hotel[i][j].status == 'R'))
                 {
-                    checkOut(andar, apto);
-                    break;
+                	printf("O quarto selecionado nao esta ocupado\n");
+                	exibirMapaHotel();
+                	break;
+				}
+                else
+				{
+				checkOut(andar - 1, apto - 1);
+                exibirMapaHotel();
+                break;
+            	}
+            case 5: // cancelamento de reserva
+                printf("Deseja cancelar a reserva de qual quarto: ");
+                scanf("%d %d", &andar, &apto);
+                fclear();
+                if(hotel[i-1][j-1].status == '.')
+                {
+                	printf("O quarto selecionado nao esta reservado\n");
+                	break;
+				}
+				else if(hotel[i-1][j-1].status == 'O')
+				{
+					printf("O quarto selecionado esta ocupado\n");
+					break;
+				}
+                else{
+                printf("Quarto reservado para: %s\tCPF: %s\n", hotel[andar - 1][apto - 1].hospede.nome, hotel[andar - 1][apto - 1].hospede.cpf);
+                printf("Deseja cancelar a reserva? (s/n): ");
+                scanf("%c", &confirmacao);
+                fclear();
+                if (confirmacao == 's' || confirmacao == 'S') 
+				{
+                    checkOut(andar - 1, apto - 1);
+                    exibirMapaHotel();
+                }
                 }
                 break;
-                
             case 0: // sair
-            printf("Saindo...\n");
-            break;
+                printf("Saindo...\n");
+                break;
             default:
                 printf("Opção inválida!\n");
         }
-    } while (opcao != 0);
+    } while(opcao != 0);
 
+    return 0;
 }
 
-void checkOut(int i, int j){
+void checkOut(int i, int j)
+{
     hotel[i][j].status = '.';
     hotel[i][j].hospede.nome[40] = ' ';
     hotel[i][j].hospede.cpf[14] = ' ';
 }
 
-void checkIn (int i, int j){
-    char v;
-    if(hotel[i][j].status == '.'){
-        printf("Digite o Nome\n");
-        scanf("%c", hotel[i][j].hospede.nome[40]);
+void checkIn(int i, int j) 
+{
+    char confirmacao; //S ou s confirma, n ou N cancela
+    if (hotel[i][j].status == '.') 
+	{
+        printf("Digite o Nome: ");
+        scanf("%s", hotel[i][j].hospede.nome);
         fclear();
-        printf("Digite o CPF:\n");
-        scanf("%c", hotel[i][j].hospede.cpf[14]);
+        printf("Digite o CPF: ");
+        scanf("%s", hotel[i][j].hospede.cpf);
         fclear();
-        printf("deseja confirmar o check in?(s/n)\n");
-        scanf("%c", &v);
+        printf("Deseja confirmar o check-in? (s/n): ");
+        scanf("%c", &confirmacao);
         fclear();
-        if (v == 's' || v == 'S'){
+        if (confirmacao == 's' || confirmacao == 'S') 
+		{
             hotel[i][j].status = 'O';
-        }else if (v == 'n' || v == 'N'){
+        } else if (confirmacao == 'n' || confirmacao == 'N') 
+		{
             checkOut(i, j);
         }
-        
-        
-    }else if (hotel[i][j].status == 'R'){
-        printf("quarto reservado para:\t%c\tCPF:\t%c\n", hotel[i][j].hospede.nome[40], hotel[i][j].hospede.cpf[14]);
-        printf("deseja confirmar o Check-in(s/n)?:\n");
-        scanf("%c", &v);
+    } else if (hotel[i][j].status == 'R') 
+	{
+        printf("Quarto reservado para: %s\tCPF: %s\n", hotel[i][j].hospede.nome, hotel[i][j].hospede.cpf);
+        printf("Deseja confirmar o check-in? (s/n): ");
+        scanf("%c", &confirmacao);
         fclear();
-        if (v == 's' || v == 'S'){
+        if (confirmacao == 's' || confirmacao == 'S') 
+		{
             hotel[i][j].status = 'O';
-        }else if (v == 'n' || v == 'N'){
+        } else if (confirmacao == 'n' || confirmacao == 'N') 
+		{
             checkOut(i, j);
         }
-    }else{
-        printf("Quarto Ocupado\nDeseja escolher outro quarto?\n");
-        scanf("%c", &v);
+    } else 
+	{
+        printf("Quarto Ocupado\nDeseja escolher outro quarto? (s/n): ");
+        scanf("%c", &confirmacao);
         fclear();
-        if (v == 's' || v == 'S')
-        {
-            printf("digite o quarto que deseja realizar o Check-in\n");
+        if (confirmacao == 's' || confirmacao == 'S') 
+		{
+            printf("Digite o quarto que deseja realizar o check-in: ");
             scanf("%d %d", &i, &j);
             fclear();
             checkIn(i, j);
         }
-        
     }
-    
-    
 }
 
-void reservarApartamento(int i, int j) {
-    if (hotel[i][j].status == '.') {
+void reservarApartamento(int i, int j) 
+{
+    if (hotel[i][j].status == '.') 
+	{
         hotel[i][j].status = 'R';
         printf("Apartamento %d-%d reservado com sucesso.\n", i + 1, j + 1);
-    } else {
+    } else 
+	{
         printf("Apartamento %d-%d não está disponível para reserva.\n", i + 1, j + 1);
     }
 }
 
-void exibirMapaHotel() {
+void exibirMapaHotel() 
+{
     printf("Mapa dos apartamentos:\n");
-    printf("\t");
-    
-    for(int j = 1; j < 15; j++)
-    	printf("%2d ", j);
+    printf("Apartamentos");
+	printf("\t");
+	
+    for (int j = 0; j < 14; j++)
+        printf(" %2d ", j + 1);
     printf("\n\n");
-    
-    for (int i = 20; i > 0; i--) { 
-        printf("%2d:\t", i);
-        for (int j = 1; j < 15; j++) {
-            printf(" %c ", hotel[i][j].status);
+
+    for (int i = 19; i >= 0; i--) 
+	{
+        printf("Andar \t  %4d\t", i + 1);
+        for (int j = 0; j < 14; j++)
+		{
+            printf(" %2c ", hotel[i][j].status);
         }
         printf("\n");
     }
 }
 
-void fclear(){
-	char car;
-	while((car = fgetc(stdin)) != EOF && car != '\n'){}
+void fclear() 
+{
+    char car;
+    while ((car = fgetc(stdin)) != EOF && car != '\n') {}
 }
