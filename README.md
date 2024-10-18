@@ -1,7 +1,4 @@
 # Hotel
 
-Projeto Eli Banks
+Projeto feito em C com a finalidade de criar um sistema de manejamento de hotel
 
-## Importante
-
-ctrl + shift + b pr criar o .exe no vsc
